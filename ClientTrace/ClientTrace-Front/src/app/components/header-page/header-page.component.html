@@ -1,0 +1,16 @@
+<mat-toolbar class="menuGradient menuShadow">
+  <button mat-icon-button [class.open]="menuState === 'open'" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span style="margin-left: 40px;"></span>
+  <span></span>
+
+  <img src="../../../assets/sopraninoLogo.png" class="logo" alt="Logo">
+</mat-toolbar>
+
+<mat-sidenav #sidenav mode="over" class="mat-elevation-z8">
+  <div class="links">
+    <a (click)="goToClientTrace(); sidenav.close()" mat-button class="custom-color"><mat-icon>assignment</mat-icon>Tracciamento</a>
+  </div>
+</mat-sidenav>
