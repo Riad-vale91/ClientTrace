@@ -8,9 +8,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderPageModule } from "./components/header-page/header-page.module";
 
 
+
 @NgModule({
     declarations: [
         AppComponent,
+        
      
        
     ],

@@ -13,6 +13,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TabellaDialogModule } from 'src/app/components/tabella-dialog/tabella-dialog.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 
 
 
@@ -23,6 +26,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ClientTraceListRoutingModule,
+    TabellaDialogModule,
+
     FormsModule,
     MatButtonModule,
     MatTableModule,
@@ -32,7 +37,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatProgressBarModule,
     MatInputModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule
+    
     
 
   ],

@@ -1,13 +1,14 @@
 export interface ITrace{
-    Id: number;
-    DataOra: Date;
-    Societa?: string;
-    Agenzia?: string;
-    NomeApplicazione?: string; 
-    Utente?: string;
-    Pagina?: string;
-    Descrizione?: string;
-    IdTipoTraccia?: number;
-    IdTracerCategories?: number;
+    [key: string]: any;
+    id: number;
+    dataOra: Date;
+    societa?: string;
+    agenzia?: string;
+    nomeApplicazione?: string; 
+    utente?: string;
+    pagina?: string;
+    descrizione?: string;
+    idTipoTraccia?: number;
+    idTracerCategories?: number;
 
 }
