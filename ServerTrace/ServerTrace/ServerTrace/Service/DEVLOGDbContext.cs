@@ -12,5 +12,6 @@ namespace ServerTrace.Service
         }
 
         public virtual DbSet<DEV_TracerDB> DEV_TracerDB { get; set; }
+        public virtual DbSet<DEV_TipoTraccia> DEV_TipoTraccia { get; set; }
     }
 }
