@@ -13,10 +13,11 @@ export class TraceService {
   private urlTipoTraccia = 'http://localhost:5288/api/Trace/traceTypes'; 
   constructor(private http: HttpClient) { }
 
-  getTraces(numberOfRows: number, idTipoTraccia: number): Observable<ITrace[]> {
-    const params = new HttpParams()
-      .set('numberOfRows', numberOfRows.toString())
-      .set('idTipoTraccia', idTipoTraccia.toString());
+  getTraces(numberOfRows: number, idTipoTraccia?: number): Observable<ITrace[]> {
+    let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+    if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
+      params = params.set('idTipoTraccia', idTipoTraccia.toString());
+    }
     return this.http.get<ITrace[]>(this.url, { params })
       .pipe(
         tap(traces => console.log(traces)),
@@ -26,7 +27,7 @@ export class TraceService {
         })
       );
   }
-
+  
   getTraceTypes(): Observable<ITipoTraccia[]> {
     return this.http.get<ITipoTraccia[]>(this.urlTipoTraccia)
       .pipe(
@@ -38,4 +39,5 @@ export class TraceService {
       );
   }
 }
+
 

@@ -39,13 +39,11 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
       this.paginatorPage();
   }
   ngOnInit() {
-    this.getAllTraces(this.numberOfRows, this.selectedIdTipoTraccia);
+    this.getAllTraces(this.numberOfRows, this.selectedIdTipoTraccia); 
     this.traceService.getTraceTypes().subscribe((traceTypes: ITipoTraccia[]) => {
       this.tracciaTypes = traceTypes;
-    });
-    
+    });   
   }
-
   getAllTraces(numberOfRows: number, idTipoTraccia: number) {
     this.isLoading = true;
     this.traceService.getTraces(numberOfRows, idTipoTraccia).subscribe((traces: ITrace[]) => {
@@ -71,6 +69,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   updateList() {
     this.getAllTraces(this.numberOfRows, this.selectedIdTipoTraccia);
   }
+  
   onRowClicked(row: ITrace) {
     this.dialog.open(TabellaDialogComponent, {
         width: '500px',

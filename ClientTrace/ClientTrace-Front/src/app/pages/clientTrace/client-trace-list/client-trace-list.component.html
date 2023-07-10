@@ -13,18 +13,17 @@
         <div class="custom-input-section">
           <mat-form-field class="custom-input">
             <mat-label>Numero di righe</mat-label>
-            <input matInput [(ngModel)]="numberOfRows" (change)="updateList()" type="number" min="1" step="1">
+            <input matInput [(ngModel)]="numberOfRows" (ngModelChange)="updateList()" type="number" min="1" step="1">
           </mat-form-field>
-        
           <mat-form-field class="custom-input">
             <mat-label>Tipo Traccia</mat-label>
             <mat-select [(ngModel)]="selectedIdTipoTraccia" (selectionChange)="updateList()">
+              <mat-option [value]="0">Tutte le tracce</mat-option>
               <mat-option *ngFor="let tipo of tracciaTypes" [value]="tipo.id">
                 {{ tipo.descrizione }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-      
           <button (click)="updateList()" mat-raised-button color="primary">Conferma</button>
         </div>
       </section>
