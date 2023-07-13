@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TabellaDialogComponent } from 'src/app/components/tabella-dialog/tabella-dialog.component';
 import { ITipoTraccia } from 'src/app/models/ITipoTraccia';
 import { TraceService } from 'src/app/services/trace.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 @Component({
   selector: 'app-client-trace-list',
   templateUrl: './client-trace-list.component.html',
@@ -21,6 +22,8 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['id', 'dataOra', 'societa', 'agenzia', 'nomeApplicazione', 'utente','idTipoTraccia', 'idTracerCategories'];
   list: ITrace[] = [];
   tracciaTypes: ITipoTraccia[] = [];
+  societaList: string[] = [];
+  selectedSocietaList: string[] = [];
   dataSource: MatTableDataSource<ITrace> = new MatTableDataSource<ITrace>(this.list);
   isLoading = true;
   numberOfRows: number = 20; 
@@ -43,6 +46,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     this.traceService.getTraceTypes().subscribe((traceTypes: ITipoTraccia[]) => {
       this.tracciaTypes = traceTypes;
     });   
+    
   }
   getAllTraces(numberOfRows: number, idTipoTraccia: number) {
     this.isLoading = true;
@@ -69,7 +73,6 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   updateList() {
     this.getAllTraces(this.numberOfRows, this.selectedIdTipoTraccia);
   }
-  
   onRowClicked(row: ITrace) {
     this.dialog.open(TabellaDialogComponent, {
         width: '500px',
@@ -83,5 +86,24 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     if (this.paginator) this.dataSource.paginator = this.paginator;
       if (this.sort) this.dataSource.sort = this.sort;
   }
+ onNumberOfRowsChange(value: number) {
+  this.numberOfRows = value;
+  this.updateList();
+}
+onSelectedIdTipoTracciaChange(value: number) {
+  this.selectedIdTipoTraccia = value;
+  this.updateList();
+}
+onSocietaSelectionChange($event: MatCheckboxChange, societa: string) {
+  if ($event.checked) {
+    this.selectedSocietaList.push(societa);
+  } else {
+    const index = this.selectedSocietaList.indexOf(societa);
+    if (index > -1) {
+      this.selectedSocietaList.splice(index, 1);
+    }
+  }
+  this.updateList();
+}
 }
 

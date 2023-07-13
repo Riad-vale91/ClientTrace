@@ -19,7 +19,7 @@
 }
 
 .table {
-    display: table;  /* Updated */
+    display: table;  
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
@@ -94,7 +94,7 @@ mat-paginator {
     font-size: x-large;
     text-align: center;
   }
-  .custom-input-section {
+  /* .custom-input-section {
     display: flex;
     justify-content: flex-end;
     gap: 20px;
@@ -105,4 +105,27 @@ mat-paginator {
   .custom-input {
     max-width: 200px;
   }
-  
+   */
+   .yellow-row {
+    background-color: yellow !important;
+}
+
+.red-row {
+    background-color: red !important;
+}
+
+.green-row {
+    background-color: green !important;
+}
+
+.yellow-row,
+.red-row,
+.green-row {
+    transition: background-color 0.3s ease;
+    padding: 10px;
+}
+.check-box-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }

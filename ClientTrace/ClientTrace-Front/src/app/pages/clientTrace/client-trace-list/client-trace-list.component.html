@@ -2,29 +2,27 @@
   <div class="container">
     <div class="box">
       <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-      <section style="width: 100%;">
-        <button (click)="getAllTraces(numberOfRows,selectedIdTipoTraccia)" mat-raised-button color="primary" class="backgroundButton space">Aggiorna</button>
-        
-        <mat-form-field style="width: 100%;">
-          <mat-label>Search</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="cerca">
-        </mat-form-field>
-        
-        <div class="custom-input-section">
-          <mat-form-field class="custom-input">
-            <mat-label>Numero di righe</mat-label>
-            <input matInput [(ngModel)]="numberOfRows" (ngModelChange)="updateList()" type="number" min="1" step="1">
+      <section style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <button (click)="getAllTraces(numberOfRows,selectedIdTipoTraccia)" mat-raised-button color="primary" class="backgroundButton space">Aggiorna</button>
+          <mat-form-field style="margin-left: 20px;">
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="cerca">
           </mat-form-field>
-          <mat-form-field class="custom-input">
-            <mat-label>Tipo Traccia</mat-label>
-            <mat-select [(ngModel)]="selectedIdTipoTraccia" (selectionChange)="updateList()">
-              <mat-option [value]="0">Tutte le tracce</mat-option>
-              <mat-option *ngFor="let tipo of tracciaTypes" [value]="tipo.id">
-                {{ tipo.descrizione }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button (click)="updateList()" mat-raised-button color="primary">Conferma</button>
+        </div>
+      
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div class="check-box-container">
+            <div class="check-box" *ngFor="let societa of societaList">
+              <mat-checkbox [value]="societa" (change)="onSocietaSelectionChange($event, societa)">
+                {{ societa }}
+              </mat-checkbox>
+            </div>
+          </div>
+          <app-client-trace-filter 
+            (numberOfRowsChange)="onNumberOfRowsChange($event)"
+            (selectedIdTipoTracciaChange)="onSelectedIdTipoTracciaChange($event)">
+          </app-client-trace-filter>
         </div>
       </section>
       
@@ -78,7 +76,8 @@
          
           <!-- Righe della tabella principale -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'yellow-row': row.idTipoTraccia == 2, 'red-row': row.idTipoTraccia == 3, 'green-row': row.idTipoTraccia == 4}"></tr>
+
         </table>
 
         <mat-paginator [length]="list.length" [pageSize]="25" [pageSizeOptions]="[5, 10, 20, 50]"></mat-paginator>

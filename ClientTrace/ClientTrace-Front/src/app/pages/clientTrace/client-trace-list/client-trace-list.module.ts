@@ -16,38 +16,40 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TabellaDialogModule } from 'src/app/components/tabella-dialog/tabella-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { ClientTraceFilterModule } from "../client-trace-filter/client-trace-filter.module";
+import { ClientTraceFilterComponent } from '../client-trace-filter/client-trace-filter.component';
+import {MatCheckboxModule} from '@angular/material/checkbox'; 
+
 
 
 
 @NgModule({
-  declarations: [
-    ClientTracelistComponent
-  ],
-  imports: [
-    CommonModule,
-    ClientTraceListRoutingModule,
-    TabellaDialogModule,
-
-    FormsModule,
-    MatButtonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatProgressBarModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    MatSelectModule
-    
-    
-
-  ],
-  exports:
-  [
-    ClientTracelistComponent
-  ]
+    declarations: [
+        ClientTracelistComponent
+    ],
+    exports: [
+        ClientTracelistComponent
+    ],
+    imports: [
+        CommonModule,
+        ClientTraceListRoutingModule,
+        TabellaDialogModule,
+        ClientTraceFilterModule,
+        FormsModule,
+        MatButtonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatFormFieldModule,
+        MatProgressBarModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        MatCheckboxModule
+        
+    ]
 })
 export class ClientTraceListModule { }
 
