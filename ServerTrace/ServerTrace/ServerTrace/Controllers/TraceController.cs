@@ -47,7 +47,7 @@ namespace ServerTrace.Controllers
         {
             try
             {
-                var traceTypes = await _context.DEV_TipoTraccia.ToListAsync(); // Replace TraceTypes with your actual DbSet or data access method
+                var traceTypes = await _context.DEV_TipoTraccia.ToListAsync(); 
 
                 return Ok(traceTypes);
             }
