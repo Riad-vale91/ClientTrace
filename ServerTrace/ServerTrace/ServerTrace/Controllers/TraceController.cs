@@ -20,7 +20,7 @@ namespace ServerTrace.Controllers
         }
 
         [HttpGet("traces")]
-        public async Task<IActionResult> GetTraces(int numberOfRows, long? IdTipoTraccia = null)
+        public async Task<IActionResult> GetTraces(int numberOfRows, DateTime? startDate = null, DateTime? endDate = null, long? IdTipoTraccia = null)
         {
             try
             {
@@ -31,25 +31,21 @@ namespace ServerTrace.Controllers
                     query = query.Where(x => x.IdTipoTraccia == IdTipoTraccia.Value);
                 }
 
+                if (startDate.HasValue)
+                {
+                    DateTime utcStartDate = startDate.Value.ToUniversalTime();
+                    query = query.Where(x => x.DataOra >= utcStartDate);
+                }
+
+                if (endDate.HasValue)
+                {
+                    DateTime utcEndDate = endDate.Value.ToUniversalTime().AddDays(1).AddTicks(-1);
+                    query = query.Where(x => x.DataOra <= utcEndDate);
+                }
+
                 var traces = await query.Take(numberOfRows).ToListAsync();
 
                 return Ok(traces);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("traceTypes")]
-        public async Task<IActionResult> GetTraceTypes()
-        {
-            try
-            {
-                var traceTypes = await _context.DEV_TipoTraccia.ToListAsync(); 
-
-                return Ok(traceTypes);
             }
             catch (Exception ex)
             {
