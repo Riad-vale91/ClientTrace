@@ -50,6 +50,7 @@ export class ClientTraceFilterComponent implements OnInit {
       gia: false,
     });
     this.numberOfRows = 20;
+    this.traceService.resetAllFilters();
   }
   
   updateList() {

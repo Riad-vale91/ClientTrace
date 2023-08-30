@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { ITrace } from '../models/ITrace';
 import { ITipoTraccia } from '../models/ITipoTraccia';
 
@@ -16,7 +16,8 @@ export class TraceService {
   private _tracesBehavior = new BehaviorSubject<ITrace[]>([]);
   private _traceTypesBehavior = new BehaviorSubject<ITipoTraccia[]>([]);
   private societaFilter = new BehaviorSubject<string[]>([]);
-private dateFilter = new BehaviorSubject<{start: Date, end: Date}>({start: new Date(), end: new Date()});
+  private resetFilterSubject = new Subject<void>();
+  resetFilter$ = this.resetFilterSubject.asObservable();
 
   
 
@@ -40,9 +41,6 @@ private dateFilter = new BehaviorSubject<{start: Date, end: Date}>({start: new D
     this.societaFilter.next(societa);
 }
 
-setDateFilter(start: Date, end: Date) {
-    this.dateFilter.next({start, end});
-}
 
 
   getTraces(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
@@ -115,8 +113,6 @@ setDateFilter(start: Date, end: Date) {
     );
 }
 
-  
-
   getTraceTypes(): Observable<ITipoTraccia[]> {
     return this.httpClient.get<ITipoTraccia[]>(this.urlTipoTraccia)
       .pipe(
@@ -128,6 +124,9 @@ setDateFilter(start: Date, end: Date) {
           throw error;
         })
       );
+  }
+  resetAllFilters() {
+    this.resetFilterSubject.next();
   }
 }
 

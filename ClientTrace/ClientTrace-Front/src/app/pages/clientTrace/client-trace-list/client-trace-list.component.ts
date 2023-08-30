@@ -73,6 +73,10 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     this.getAllTracesByNumerOfRow();
     this.getTracesTypesByObservable();  
     this.filterData();
+    this.traceSubscription = this.traceService.resetFilter$.subscribe(() => {
+      this.range.get('start')?.setValue(null);
+      this.range.get('end')?.setValue(null);
+    });
     
   }
   getAllTracesByNumerOfRow() {
