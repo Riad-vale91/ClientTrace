@@ -49,7 +49,7 @@ export class ClientTraceFilterComponent implements OnInit {
       co2: false,
       gia: false,
     });
-    this.numberOfRows = 20;
+    this.numberOfRows = 0;
     this.traceService.resetAllFilters();
   }
   
