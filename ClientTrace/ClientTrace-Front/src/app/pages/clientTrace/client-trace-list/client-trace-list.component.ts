@@ -36,7 +36,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   selectedSocieta: string[] = [];
   dataSource: MatTableDataSource<ITrace> = new MatTableDataSource<ITrace>(this.list);
   isLoading = true;
-  numberOfRows: number = 20; 
+  numberOfRows: number = 30; 
   selectedIdTipoTraccia: number = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   @ViewChild(MatSort) sort: MatSort | null = null;
@@ -60,7 +60,6 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
       });
       this.startDateFilter = new Date(this.range.get('start')?.value);
       this.endDateFilter = new Date(this.range.get('end')?.value);
-      
      }
     
 
@@ -70,14 +69,15 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     
-    this.getAllTracesByNumerOfRow();
+    // this.getAllTracesByNumerOfRow();
+    // this.numberOfRows=30;
     this.getTracesTypesByObservable();  
     this.filterData();
     this.traceSubscription = this.traceService.resetFilter$.subscribe(() => {
       this.range.get('start')?.setValue(null);
       this.range.get('end')?.setValue(null);
     });
-    
+    this.inItGetTrace();
   }
   getAllTracesByNumerOfRow() {
     this.isLoading = true;
@@ -242,6 +242,12 @@ resetList(){
     this.giaFilter = this.selectedSocieta.includes("GIA") ? "GIA" : "";
     this.getAllTracesByNumerOfRow();
   }
-
+  inItGetTrace(){
+    this.numberOfRows=30;
+    this.selectedIdTipoTraccia=3;
+    this.getAllTracesByNumerOfRow();
+    this.applyFilters();
+    this.resetList();
+  }
 }
   

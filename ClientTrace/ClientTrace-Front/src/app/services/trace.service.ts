@@ -57,6 +57,7 @@ export class TraceService {
     if (endDate) {
       params = params.set('endDate', endDate.toISOString());
     }
+  
     return this.httpClient.get<ITrace[]>(this.url, { params })
       .pipe(
         tap(traces => console.log(traces)),
@@ -69,6 +70,8 @@ export class TraceService {
 
   getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
     let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+    let tempStartDate = new Date("2023-08-31");
+    let tempEndDate = new Date("2023-08-31");
     if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
       params = params.set('idTipoTraccia', idTipoTraccia.toString());
     }
@@ -77,12 +80,18 @@ export class TraceService {
     }
     if (startDate) {
       params = params.set('startDate', startDate.toISOString());
+      tempStartDate = startDate;
     }
     if (endDate) {
       params = params.set('endDate', endDate.toISOString());
+      tempEndDate = endDate;
     }
-    
-    return this.httpClient.get<ITrace[]>(this.url, {params}).pipe(
+    console.log("params", params);
+   
+    console.log("startDate",startDate);
+    console.log("endDate", endDate);
+    // return this.httpClient.get<ITrace[]>(this.url, {params}).pipe( 
+      return this.httpClient.get<ITrace[]>(this.url+"?numberOfRows="+ numberOfRows +"&startDate="+ tempStartDate.toISOString() +"&endDate="+ tempEndDate.toDateString() +"&IdTipoTraccia="+ idTipoTraccia +"").pipe(
       tap((resp: ITrace[]) => {
         const currentTraces = this._tracesBehavior.getValue();
         const updatedTraces = [...currentTraces, ...resp];
