@@ -13,6 +13,7 @@ import { TraceService } from 'src/app/services/trace.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { TraceHubService } from 'src/app/services/trace-hub.service';
 
 @Component({
   selector: 'app-client-trace-list',
@@ -52,7 +53,9 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private datePipe: DatePipe,
-     private _formBuilder: FormBuilder) { 
+    private _formBuilder: FormBuilder,
+    private traceHubService: TraceHubService
+    ) { 
       let currentDate = new Date().toISOString().substring(0, 10);
       this.range = this._formBuilder.group({
         start: [currentDate],
@@ -60,7 +63,9 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
       });
       this.startDateFilter = new Date(this.range.get('start')?.value);
       this.endDateFilter = new Date(this.range.get('end')?.value);
-      
+
+      this.traceHubService.startConnection()
+      this.traceHubService.ReceveTracer();
      }
     
 
@@ -73,6 +78,9 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     this.getAllTracesByNumerOfRow();
     this.getTracesTypesByObservable();  
     this.filterData();
+
+
+    
     
   }
   getAllTracesByNumerOfRow() {

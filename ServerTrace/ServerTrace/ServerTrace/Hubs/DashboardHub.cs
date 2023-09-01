@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ServerTrace.Models;
 using ServerTrace.SignalR;
 
 namespace ServerTrace.Hubs
@@ -14,8 +15,9 @@ namespace ServerTrace.Hubs
 
         public async Task SendDevTracer()
         {
-            var traceriList = devTracerDbRepository.GetDevTracerDb();
-            await Clients.All.SendAsync("GetDevTracerDb", traceriList);
+            // var traceriList = devTracerDbRepository.GetDevTracerDb();
+            var traceriList = new List<DEV_TracerDB>();
+            await Clients.All.SendAsync("GetDevTracerDbHub", traceriList);
         }
     }
 }
