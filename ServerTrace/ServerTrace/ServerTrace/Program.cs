@@ -43,5 +43,11 @@ app.UseAuthorization();
 app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();
 
+app.MapHub<DashboardHub>("/gettracerhub");
+
+app.MapControllerRoute(
+                  name: "default",
+                  pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.UseSqlTableDependency<SubscribeDevTracerDbTabledDependency>(connectionString);
 app.Run();
