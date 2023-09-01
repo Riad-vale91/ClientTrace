@@ -70,8 +70,8 @@ export class TraceService {
 
   getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
     let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
-    let tempStartDate = new Date("2023-08-31");
-    let tempEndDate = new Date("2023-08-31");
+    let tempStartDate = new Date("1900-01-01");
+    let tempEndDate = new Date("1900-01-01");
     if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
       params = params.set('idTipoTraccia', idTipoTraccia.toString());
     }
