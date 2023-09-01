@@ -47,6 +47,8 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
 
   private traceSubscription?: Subscription;
+
+  private traceHubSubcription?: Subscription;
  
   constructor(private traceService: TraceService,
     private router: Router,
@@ -79,8 +81,8 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     this.getTracesTypesByObservable();  
     this.filterData();
 
-
     
+    this.initgetTracerByObservble();
     
   }
   getAllTracesByNumerOfRow() {
@@ -247,5 +249,18 @@ resetList(){
     this.getAllTracesByNumerOfRow();
   }
 
+  initgetTracerByObservble(){
+    this.traceHubSubcription = this.traceHubService.GetIsTracerRefreshObservalbe.subscribe(rep => {
+      console.log("initgetTracerByObservble");
+      this.reloadAllList();
+    });
+  }
+
+  reloadAllList(){
+      this.getAllTracesByNumerOfRow();
+      this.getTracesTypesByObservable();  
+      this.filterData();
+      console.log("Carica all List");
+  }
 }
   
