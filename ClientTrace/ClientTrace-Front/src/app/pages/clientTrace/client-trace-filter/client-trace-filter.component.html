@@ -8,7 +8,7 @@
   <mat-form-field class="custom-input" class="space-2">
     <mat-label>Tipo Traccia</mat-label>
     <mat-select [(ngModel)]="selectedIdTipoTraccia" (selectionChange)="selectedIdTipoTracciaChange.emit(selectedIdTipoTraccia)">
-      <mat-option [value]="0">Tutte le tracce</mat-option>
+      <!-- <mat-option [value]="0">Tutte le tracce</mat-option> -->
       <mat-option *ngFor="let tipo of tracciaTypes" [value]="tipo.id">
         {{ tipo.descrizione }}
       </mat-option>

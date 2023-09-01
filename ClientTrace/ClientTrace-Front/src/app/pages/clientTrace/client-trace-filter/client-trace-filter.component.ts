@@ -16,7 +16,7 @@ export class ClientTraceFilterComponent implements OnInit {
   @Output() startDateChange: EventEmitter<Date> = new EventEmitter<Date>();
   @Output() endDateChange: EventEmitter<Date> = new EventEmitter<Date>();
 
-  numberOfRows: number = 30; 
+  numberOfRows: number = 100; 
   selectedIdTipoTraccia: number = 3;
   tracciaTypes: ITipoTraccia[] = [];
   selectedSocieta: string[] = [];

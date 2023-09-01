@@ -261,7 +261,7 @@ resetList(){
   }
 
   inItGetTrace(){
-    this.numberOfRows=30;
+    this.numberOfRows=100;
     this.selectedIdTipoTraccia=3;
     this.getAllTracesByNumerOfRow();
     this.applyFilters();
