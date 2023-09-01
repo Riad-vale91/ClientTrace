@@ -267,7 +267,7 @@ resetList(){
     this.applyFilters();
     this.resetList();
 
-
+  }
   initgetTracerByObservble(){
     this.traceHubSubcription = this.traceHubService.GetIsTracerRefreshObservalbe.subscribe(rep => {
       console.log("initgetTracerByObservble");
