@@ -1,0 +1,19 @@
+﻿################################################################################
+# Il file gitignore è stato creato automaticamente da Microsoft(R) Visual Studio.
+################################################################################
+
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/0c06e16e-ea78-48b1-9d3e-24afbb631b64.vsidx
+/ServerTrace/ServerTrace/.vs/ProjectEvaluation/servertrace.metadata.v7.bin
+/ServerTrace/ServerTrace/.vs/ProjectEvaluation/servertrace.projects.v7.bin
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/111b5373-35ab-4c64-848f-335611b09ffc.vsidx
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/3bd73fcc-becf-442c-b5b0-335ce9c918cb.vsidx
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/c8682f3c-ad8f-4358-b797-6a29aeaadf57.vsidx
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/fa7161f0-4238-4366-b213-63ee568fa08c.vsidx
+/ServerTrace/ServerTrace/.vs/ServerTrace/v17/.suo
+/ServerTrace/ServerTrace/ServerTrace/obj/Debug/net6.0/apphost.exe
+/ServerTrace/ServerTrace/ServerTrace/obj/Debug/net6.0/ServerTrace.assets.cache
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/0c06e16e-ea78-48b1-9d3e-24afbb631b64.vsidx
+/ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/111b5373-35ab-4c64-848f-335611b09ffc.vsidx
+/ServerTrace/ServerTrace/.vs/ServerTrace/DesignTimeBuild/.dtbcache.v2
+/ServerTrace/ServerTrace/.vs/ServerTrace/v17/.futdcache.v2

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using ServerTrace.Hubs;
+using ServerTrace.Middleware;
 using ServerTrace.Service;
-
+using ServerTrace.SubscribeTableDependencies;
 
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +24,12 @@ builder.Services.AddCors(options =>
                             builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                         });
 });
+builder.Services.AddSingleton<DashboardHub>();
+builder.Services.AddSingleton<SubscribeDevTracerDbTabledDependency>();
+builder.Services.AddSignalR();
 var app = builder.Build();
+
+var connectionString = app.Configuration.GetConnectionString("DEVLOGConnectionString");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,5 +43,11 @@ app.UseAuthorization();
 app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();
 
+app.MapHub<DashboardHub>("/gettracerhub");
 
+app.MapControllerRoute(
+                  name: "default",
+                  pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseSqlTableDependency<SubscribeDevTracerDbTabledDependency>(connectionString);
 app.Run();
