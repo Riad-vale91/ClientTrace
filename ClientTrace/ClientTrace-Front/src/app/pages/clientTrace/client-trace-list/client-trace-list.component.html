@@ -2,34 +2,34 @@
   <div class="container">
     <div class="box">
       <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-      <section style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <button (click)="getAllTraces()" mat-raised-button color="primary" class="backgroundButton space">Aggiorna</button>
-          <mat-form-field style="margin-left: 20px;">
-            <mat-label>Search</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="cerca">
-          </mat-form-field>
-        </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-          
-          <app-client-trace-filter
-              (numberOfRowsChange)="onNumberOfRowsChange($event)"
-              (selectedIdTipoTracciaChange)="onSelectedIdTipoTracciaChange($event)"
-              (selectedSocietaChange)="onSelectedSocietaChange($event)">
-           </app-client-trace-filter>
+      <section class="my-section center-section">
+        <div class="my-inner-div align-items custom-input-section">
+            <app-client-trace-filter
+                (numberOfRowsChange)="onNumberOfRowsChange($event)"
+                (selectedIdTipoTracciaChange)="onSelectedIdTipoTracciaChange($event)"
+                (selectedSocietaChange)="onSelectedSocietaChange($event)">
+            </app-client-trace-filter>
     
-           <mat-form-field appearance="fill">
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
-                <input matStartDate formControlName="start" placeholder="Start date">
-                <input matEndDate formControlName="end" placeholder="End date">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
+            <mat-form-field class="date-picker-field" appearance="fill">
+              <mat-label>Inserisci una data</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
+                  <input matStartDate formControlName="start" placeholder="Start date">
+                  <input matEndDate formControlName="end" placeholder="End date">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+          
         </div>
-      </section>
-
+    </section>
+    
+      <div>
+        <!-- <button (click)="getAllTraces()" mat-raised-button color="primary" class="backgroundButton space">Aggiorna</button> -->
+        <mat-form-field style="margin-left: 20px;" class="full-width-search">
+          <mat-label>Cerca</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="cerca">
+        </mat-form-field>
+      </div>
       <mat-progress-bar *ngIf="isLoading" mode="indeterminate" style="height: 5px;"></mat-progress-bar>
       <div class="mat-elevation-z8">
 

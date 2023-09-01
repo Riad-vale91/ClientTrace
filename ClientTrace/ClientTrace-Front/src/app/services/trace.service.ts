@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { ITrace } from '../models/ITrace';
 import { ITipoTraccia } from '../models/ITipoTraccia';
 
@@ -16,7 +16,8 @@ export class TraceService {
   private _tracesBehavior = new BehaviorSubject<ITrace[]>([]);
   private _traceTypesBehavior = new BehaviorSubject<ITipoTraccia[]>([]);
   private societaFilter = new BehaviorSubject<string[]>([]);
-private dateFilter = new BehaviorSubject<{start: Date, end: Date}>({start: new Date(), end: new Date()});
+  private resetFilterSubject = new Subject<void>();
+  resetFilter$ = this.resetFilterSubject.asObservable();
 
   
 
@@ -40,9 +41,6 @@ private dateFilter = new BehaviorSubject<{start: Date, end: Date}>({start: new D
     this.societaFilter.next(societa);
 }
 
-setDateFilter(start: Date, end: Date) {
-    this.dateFilter.next({start, end});
-}
 
 
   getTraces(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
@@ -59,6 +57,7 @@ setDateFilter(start: Date, end: Date) {
     if (endDate) {
       params = params.set('endDate', endDate.toISOString());
     }
+  
     return this.httpClient.get<ITrace[]>(this.url, { params })
       .pipe(
         tap(traces => console.log(traces)),
@@ -71,6 +70,8 @@ setDateFilter(start: Date, end: Date) {
 
   getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
     let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+    let tempStartDate = new Date("2023-08-31");
+    let tempEndDate = new Date("2023-08-31");
     if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
       params = params.set('idTipoTraccia', idTipoTraccia.toString());
     }
@@ -79,12 +80,18 @@ setDateFilter(start: Date, end: Date) {
     }
     if (startDate) {
       params = params.set('startDate', startDate.toISOString());
+      tempStartDate = startDate;
     }
     if (endDate) {
       params = params.set('endDate', endDate.toISOString());
+      tempEndDate = endDate;
     }
-    
-    return this.httpClient.get<ITrace[]>(this.url, {params}).pipe(
+    console.log("params", params);
+   
+    console.log("startDate",startDate);
+    console.log("endDate", endDate);
+    // return this.httpClient.get<ITrace[]>(this.url, {params}).pipe( 
+      return this.httpClient.get<ITrace[]>(this.url+"?numberOfRows="+ numberOfRows +"&startDate="+ tempStartDate.toISOString() +"&endDate="+ tempEndDate.toDateString() +"&IdTipoTraccia="+ idTipoTraccia +"").pipe(
       tap((resp: ITrace[]) => {
         const currentTraces = this._tracesBehavior.getValue();
         const updatedTraces = [...currentTraces, ...resp];
@@ -115,8 +122,6 @@ setDateFilter(start: Date, end: Date) {
     );
 }
 
-  
-
   getTraceTypes(): Observable<ITipoTraccia[]> {
     return this.httpClient.get<ITipoTraccia[]>(this.urlTipoTraccia)
       .pipe(
@@ -128,6 +133,9 @@ setDateFilter(start: Date, end: Date) {
           throw error;
         })
       );
+  }
+  resetAllFilters() {
+    this.resetFilterSubject.next();
   }
 }
 
