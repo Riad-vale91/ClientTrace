@@ -31,19 +31,19 @@ namespace ServerTrace.Controllers
                     query = query.Where(x => x.IdTipoTraccia == IdTipoTraccia.Value);
                 }
 
-                if (startDate.HasValue)
+                if (startDate.Value.Year != 1900)
                 {
                     DateTime utcStartDate = startDate.Value.ToUniversalTime();
                     query = query.Where(x => x.DataOra >= utcStartDate);
                 }
 
-                if (endDate.HasValue)
+                if (startDate.Value.Year != 1900)
                 {
                     DateTime utcEndDate = endDate.Value.ToUniversalTime().AddDays(1).AddTicks(-1);
                     query = query.Where(x => x.DataOra <= utcEndDate);
                 }
 
-                var traces = await query.Take(numberOfRows).ToListAsync();
+                var traces = await query.OrderByDescending(x => x.DataOra).Take(numberOfRows).ToListAsync();
 
                 return Ok(traces);
             }
