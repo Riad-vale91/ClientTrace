@@ -129,3 +129,28 @@ mat-paginator {
     align-items: center;
     gap: 20px;
   }
+  .full-width-search {
+    width: 100%;
+  }
+  .align-items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.my-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-inner-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.date-picker-field {
+    margin-top: 20px;  
+}
