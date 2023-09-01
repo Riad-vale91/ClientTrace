@@ -1,9 +1,19 @@
-<h1 mat-dialog-title class="dialog-title">Pagina e descrizione</h1>
-<div mat-dialog-content class="dialog-content">
+<mat-toolbar>
+  Pagina e descrizione
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
   <p><strong>Pagina:</strong> {{ data.pagina }}</p>
-  <p><strong>Descrizione:</strong> {{ data.descrizione }}</p>
-</div>
-<div mat-dialog-actions class="dialog-actions">
-  <button mat-button (click)="dialogRef.close()">Chiudi</button>
-</div>
+  <div>
+    <span *ngFor="let col of displayedColumns let i = index">
+      <b>{{ col }} </b> :  {{ displayedData[i] }} <br>
+    </span>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close style="background-color: rgb(69, 69, 217);color: white;">Chiudi</button>
+</mat-dialog-actions>
+
+
 
