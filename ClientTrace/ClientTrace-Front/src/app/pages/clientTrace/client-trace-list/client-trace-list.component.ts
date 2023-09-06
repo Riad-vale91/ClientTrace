@@ -220,7 +220,7 @@ resetList(){
 
   onRowClicked(row: ITrace) {
     this.dialog.open(TabellaDialogComponent, {
-        width: '500px',
+        width: '800px',
         data: row
     });
   }
