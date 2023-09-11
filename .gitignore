@@ -17,9 +17,8 @@
 /ServerTrace/ServerTrace/.vs/ServerTrace/FileContentIndex/111b5373-35ab-4c64-848f-335611b09ffc.vsidx
 /ServerTrace/ServerTrace/.vs/ServerTrace/DesignTimeBuild/.dtbcache.v2
 /ServerTrace/ServerTrace/.vs/ServerTrace/v17/.futdcache.v2
-
-/ServerTrace/ServerTrace/.vs/ProjectEvaluation/servertrace.metadata.v6.1
-/ServerTrace/ServerTrace/.vs/ProjectEvaluation/servertrace.projects.v6.1
-
-/ServerTrace/ServerTrace/.vs/ProjectEvaluation
-
+/ServerTrace/ServerTrace/ServerTrace/bin/Release/net6.0
+/ServerTrace/ServerTrace/ServerTrace/obj/Release/net6.0
+/ServerTrace/ServerTrace/ServerTrace/obj/project.assets.json
+/ServerTrace/ServerTrace/ServerTrace/Properties/PublishProfiles
+/ServerTrace/ServerTrace/ServerTrace/ServerTrace.csproj.user
