@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -14,6 +17,10 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     LoginRoutingModule,
     HttpClientModule,
+
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule
   ],
   exports:[
     LoginComponent

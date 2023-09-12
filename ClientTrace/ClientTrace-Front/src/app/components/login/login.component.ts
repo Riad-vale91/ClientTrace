@@ -11,7 +11,7 @@ export class LoginComponent {
     ){
 }
 goToLogin(){
-
-  this.router.navigateByUrl("homepage");
+  // this.router.navigateByUrl("homepage");
+  console.log('Login clicked');
 }
 }
