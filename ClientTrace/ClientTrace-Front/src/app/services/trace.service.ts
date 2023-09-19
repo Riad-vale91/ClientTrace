@@ -9,11 +9,11 @@ import { ITipoTraccia } from '../models/ITipoTraccia';
   providedIn: 'root'
 })
 export class TraceService {
-  // private url = 'http://localhost:5288/api/Trace/traces';
-  // private urlTipoTraccia = 'http://localhost:5288/api/Types/traceTypes'; 
+  private url = 'http://localhost:5288/api/Trace/traces';
+  private urlTipoTraccia = 'http://localhost:5288/api/Types/traceTypes'; 
 
-  private url = 'https://traceninja.sopranciodue.it:447/api/Trace/traces';
-  private urlTipoTraccia = 'https://traceninja.sopranciodue.it:447/api/Types/traceTypes'; 
+  //private url = 'https://traceninja.sopranciodue.it:447/api/Trace/traces';
+  //private urlTipoTraccia = 'https://traceninja.sopranciodue.it:447/api/Types/traceTypes'; 
 
   constructor(private httpClient: HttpClient) { }
 
