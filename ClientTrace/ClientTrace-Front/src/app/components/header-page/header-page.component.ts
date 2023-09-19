@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-header-page',
@@ -11,7 +12,7 @@ export class HeaderPageComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   menuState: string = 'closed';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: MsalService) {}
 
   goToClientTrace() {
     this.router.navigateByUrl("");
@@ -20,6 +21,13 @@ export class HeaderPageComponent {
   toggleMenu() {
     this.sidenav.toggle().then(() => {
       this.menuState = this.sidenav.opened ? 'open' : 'closed';
+    });
+  }
+
+  logout(){
+    this.authService.logoutPopup({
+      mainWindowRedirectUri: "/"
+      //this.router.navigateByUrl("/home");
     });
   }
 }

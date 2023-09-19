@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import * as signalR from '@aspnet/signalR';
 
-const base_url = 'http://localhost:5288';
+//const base_url = 'http://localhost:5288';
+const base_url = 'https://traceninja.sopranciodue.it:447';
 
 @Injectable({
   providedIn: 'root'

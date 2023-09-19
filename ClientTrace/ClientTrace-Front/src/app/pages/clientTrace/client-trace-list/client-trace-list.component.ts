@@ -56,7 +56,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private datePipe: DatePipe,
     private _formBuilder: FormBuilder,
-    private traceHubService: TraceHubService
+    //private traceHubService: TraceHubService
     ) { 
       let currentDate = new Date().toISOString().substring(0, 10);
       this.range = this._formBuilder.group({
@@ -67,8 +67,8 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
       this.endDateFilter = new Date(this.range.get('end')?.value);
 
 
-      this.traceHubService.startConnection()
-      this.traceHubService.ReceveTracer();
+      // this.traceHubService.startConnection()
+      // this.traceHubService.ReceveTracer();
 
      }
     
@@ -92,7 +92,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
 
     
-    this.initgetTracerByObservble();
+    //this.initgetTracerByObservble();
     
 
   }
@@ -268,12 +268,12 @@ resetList(){
     this.resetList();
 
   }
-  initgetTracerByObservble(){
-    this.traceHubSubcription = this.traceHubService.GetIsTracerRefreshObservalbe.subscribe(rep => {
-      console.log("initgetTracerByObservble");
-      this.reloadAllList();
-    });
-  }
+  // initgetTracerByObservble(){
+  //   this.traceHubSubcription = this.traceHubService.GetIsTracerRefreshObservalbe.subscribe(rep => {
+  //     console.log("initgetTracerByObservble");
+  //     this.reloadAllList();
+  //   });
+  // }
 
   reloadAllList(){
       this.getAllTracesByNumerOfRow();
