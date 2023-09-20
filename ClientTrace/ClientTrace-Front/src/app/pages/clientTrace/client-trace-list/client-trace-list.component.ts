@@ -235,10 +235,14 @@ resetList(){
   }
   onNumberOfRowsChange(value: number) {
     this.numberOfRows = value;
-    this.getAllTracesByNumerOfRow();
-    this.applyFilters();
-    this.resetList();
+    
+    setTimeout(() => {
+      this.getAllTracesByNumerOfRow();
+      this.applyFilters();
+      this.resetList();
+    }, 3000);
   }
+  
   onSelectedIdTipoTracciaChange(idTipoTraccia: number) {
     this.selectedIdTipoTraccia = idTipoTraccia;
     this.getAllTracesByNumerOfRow();
