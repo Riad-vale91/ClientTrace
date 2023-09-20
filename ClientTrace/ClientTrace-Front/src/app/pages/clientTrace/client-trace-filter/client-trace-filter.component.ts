@@ -27,6 +27,8 @@ export class ClientTraceFilterComponent implements OnInit {
     co2: false,
     gia: false,
   });
+  isInputEnabled: boolean = false;
+
 
   constructor(private traceService: TraceService, private _formBuilder: FormBuilder) { }
 
