@@ -44,6 +44,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   range: FormGroup;
   startDateFilter: Date | undefined;
   endDateFilter: Date | undefined;
+  descrizioneFilter: string = "";
 
 
   private traceSubscription?: Subscription;
@@ -75,6 +76,10 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
       this.paginatorPage();
+      this.dataSource.filterPredicate = (data: ITrace, filter: string) => {
+        const descrizione = data.descrizione ? data.descrizione.toLowerCase() : '';
+        return descrizione.includes(filter);
+      };
   }
 
   ngOnInit() {
@@ -286,5 +291,10 @@ resetList(){
       console.log("Carica all List");
 
   }
+ 
+  applyDescriptionFilter() {
+    this.dataSource.filter = this.descrizioneFilter.trim().toLowerCase();
+  }
+  
 }
   

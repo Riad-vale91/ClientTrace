@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
@@ -46,80 +47,88 @@ export class TraceService {
 }
 
 
-
-  getTraces(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
-    let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
-    if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
-      params = params.set('idTipoTraccia', idTipoTraccia.toString());
-    }
-    if (societa) {
-      params = params.set('societa', societa);
-    }
-    if (startDate) {
-      params = params.set('startDate', startDate.toISOString());
-    }
-    if (endDate) {
-      params = params.set('endDate', endDate.toISOString());
-    }
-  
-    return this.httpClient.get<ITrace[]>(this.url, { params })
-      .pipe(
-        tap(traces => console.log(traces)),
-        catchError(error => {
-          console.error('Error traces', error);
-          throw error;
-        })
-      );
+getTraces(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
+  let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+  if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
+    params = params.set('idTipoTraccia', idTipoTraccia.toString());
   }
+  if (societa) {
+    params = params.set('societa', societa);
+  }
+  if (startDate) {
+    params = params.set('startDate', startDate.toISOString());
+  }
+  if (endDate) {
+    params = params.set('endDate', endDate.toISOString());
+  }
+  if (descrizione !== "") {
+    params = params.set('descrizione', descrizione);
+  }
+  
+  return this.httpClient.get<ITrace[]>(this.url, { params })
+    .pipe(
+      tap(traces => console.log(traces)),
+      catchError(error => {
+        console.error('Error traces', error);
+        throw error;
+      })
+    );
+}
 
-  getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
-    let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
-    let tempStartDate = new Date("1900-01-01");
-    let tempEndDate = new Date("1900-01-01");
-    if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
-      params = params.set('idTipoTraccia', idTipoTraccia.toString());
-    }
-    if (societa) {
-      params = params.set('societa', societa);
-    }
-    if (startDate) {
-      params = params.set('startDate', startDate.toISOString());
-      tempStartDate = startDate;
-    }
-    if (endDate) {
-      params = params.set('endDate', endDate.toISOString());
-      tempEndDate = endDate;
-    }
-    console.log("params", params);
-   
-    console.log("startDate",startDate);
-    console.log("endDate", endDate);
-    // return this.httpClient.get<ITrace[]>(this.url, {params}).pipe( 
-      return this.httpClient.get<ITrace[]>(this.url+"?numberOfRows="+ numberOfRows +"&startDate="+ tempStartDate.toISOString() +"&endDate="+ tempEndDate.toDateString() +"&IdTipoTraccia="+ idTipoTraccia +"").pipe(
+getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
+  let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+  let tempStartDate = new Date("1900-01-01");
+  let tempEndDate = new Date("1900-01-01");
+
+  if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
+    params = params.set('idTipoTraccia', idTipoTraccia.toString());
+  }
+  if (societa) {
+    params = params.set('societa', societa);
+  }
+  if (startDate) {
+    params = params.set('startDate', startDate.toISOString());
+    tempStartDate = startDate;
+  }
+  if (endDate) {
+    params = params.set('endDate', endDate.toISOString());
+    tempEndDate = endDate;
+  }
+  if (descrizione !== "") {
+    params = params.set('descrizione', descrizione);
+  }
+ 
+  return this.httpClient.get<ITrace[]>(this.url, {params})
+    .pipe(
       tap((resp: ITrace[]) => {
         const currentTraces = this._tracesBehavior.getValue();
         const updatedTraces = [...currentTraces, ...resp];
         this._tracesBehavior.next(updatedTraces);
       })
     );
-  }
-  
+}
 
-  resetTracer(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date): Observable<ITrace[]> {
-    let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
-    if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
-      params = params.set('idTipoTraccia', idTipoTraccia.toString());
-    }
-    if (societa) {
-      params = params.set('societa', societa);
-    }
-    if (startDate) {
-      params = params.set('startDate', startDate.toISOString());
-    }
-    if (endDate) {
-      params = params.set('endDate', endDate.toISOString());
-    }
-    return this.httpClient.get<ITrace[]>(this.url, {params}).pipe(
+resetTracer(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
+  let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+
+  if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
+    params = params.set('idTipoTraccia', idTipoTraccia.toString());
+  }
+  if (societa) {
+    params = params.set('societa', societa);
+  }
+  if (startDate) {
+    params = params.set('startDate', startDate.toISOString());
+  }
+  if (endDate) {
+    params = params.set('endDate', endDate.toISOString());
+  }
+  if (descrizione !== "") {
+    params = params.set('descrizione', descrizione);
+  }
+
+  return this.httpClient.get<ITrace[]>(this.url, {params})
+    .pipe(
       tap((resp: ITrace[]) => {
         this.setTracesObservable = resp;
       })
@@ -142,5 +151,3 @@ export class TraceService {
     this.resetFilterSubject.next();
   }
 }
-
-
