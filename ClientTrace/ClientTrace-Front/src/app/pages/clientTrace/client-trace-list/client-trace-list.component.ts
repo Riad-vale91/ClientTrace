@@ -37,7 +37,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   selectedSocieta: string[] = [];
   dataSource: MatTableDataSource<ITrace> = new MatTableDataSource<ITrace>(this.list);
   isLoading = true;
-  numberOfRows: number = 30; 
+  numberOfRows: number = 1000; 
   selectedIdTipoTraccia: number = 3;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   @ViewChild(MatSort) sort: MatSort | null = null;
@@ -85,7 +85,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     
     // this.getAllTracesByNumerOfRow();
-    // this.numberOfRows=30;
+    this.numberOfRows=1000;
     this.getTracesTypesByObservable();  
     this.filterData();
 
@@ -98,28 +98,27 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   }
 
   getAllTracesByNumerOfRow(): void {
-    console.log('selectedIdTipoTraccia:', this.selectedIdTipoTraccia);
-
     this.isLoading = true;
-  
+
     let startControl = this.range.get('start');
     let endControl = this.range.get('end');
-  
+
     this.startDateFilter = startControl?.value ? new Date(startControl.value) : undefined;
     this.endDateFilter = endControl?.value ? new Date(endControl.value) : undefined;
 
-    this.traceService.getTracerByObservble(this.numberOfRows, undefined, undefined, this.startDateFilter, this.endDateFilter)
+    this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia !== null ? this.selectedIdTipoTraccia : undefined, undefined, this.startDateFilter, this.endDateFilter)
         .subscribe((traces: ITrace[]) => {
-
             traces.forEach(trace => {
                 trace.dataOra = new Date(trace.dataOra);
             });
-            
-            this.list = traces.filter(trace => this.filterByDate(trace) && this.filterBySocieta(trace) && this.filterByIdTipoTraccia(trace));
 
-            this.dataSource.data = this.list;
-            console.log('Traces dopo tutti i filtri:', this.list);  
-    
+            this.list = traces.filter(trace => 
+                this.filterByDate(trace) && 
+                this.filterBySocieta(trace) && 
+                this.filterByIdTipoTraccia(trace)
+            );
+
+            this.dataSource.data = this.list;    
             this.isLoading = false;
             this.applyFilters();
         });
@@ -127,23 +126,29 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
 private filterByDate(trace: ITrace): boolean {
     return (
-        (!this.startDateFilter || (trace.dataOra && trace.dataOra >= this.startDateFilter)) &&
-        (!this.endDateFilter || (trace.dataOra && trace.dataOra <= this.endDateFilter))
+        (!this.startDateFilter || (trace?.dataOra && trace.dataOra >= this.startDateFilter)) &&
+        (!this.endDateFilter || (trace?.dataOra && trace.dataOra <= this.endDateFilter))
     );
 }
 
 private filterBySocieta(trace: ITrace): boolean {
-  if (this.selectedSocieta.length > 0) {
-      return !!trace.societa && this.selectedSocieta.includes(trace.societa);
-  }
-  return true;
+    if (this.selectedSocieta.length > 0) {
+        return !!trace.societa && this.selectedSocieta.includes(trace.societa);
+    }
+    return true;
 }
+
 private filterByIdTipoTraccia(trace: ITrace): boolean {
-  if (this.selectedIdTipoTraccia !== undefined && this.selectedIdTipoTraccia !== null) {
-      return trace.idTipoTraccia === this.selectedIdTipoTraccia;
-  }
-  return true; 
+
+    if (this.selectedIdTipoTraccia === null) {
+        return true;
+    }
+    if (this.selectedIdTipoTraccia !== undefined) {
+        return trace.idTipoTraccia === this.selectedIdTipoTraccia;
+    }
+    return true; 
 }
+
 
   
 getAllTraces() {
@@ -249,7 +254,9 @@ resetList(){
 
   ngOnDestroy() {
     this.traceSubscription?.unsubscribe();
-  }
+    this.traceHubSubcription?.unsubscribe();
+}
+
 
   paginatorPage(){
     if (this.paginator) this.dataSource.paginator = this.paginator;
