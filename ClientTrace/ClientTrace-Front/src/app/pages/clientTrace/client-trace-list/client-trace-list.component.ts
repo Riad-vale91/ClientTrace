@@ -38,7 +38,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<ITrace> = new MatTableDataSource<ITrace>(this.list);
   isLoading = true;
   numberOfRows: number = 30; 
-  selectedIdTipoTraccia: number = 0;
+  selectedIdTipoTraccia: number = 3;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   @ViewChild(MatSort) sort: MatSort | null = null;
   range: FormGroup;
@@ -73,7 +73,6 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
      }
     
-
   ngAfterViewInit(): void {
       this.paginatorPage();
       this.dataSource.filterPredicate = (data: ITrace, filter: string) => {
@@ -94,40 +93,56 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
       this.range.get('end')?.setValue(null);
     });
     this.inItGetTrace();
-
-
-    
     //this.initgetTracerByObservble();
-    
-
   }
-  getAllTracesByNumerOfRow() {
+
+  getAllTracesByNumerOfRow(): void {
+    console.log('selectedIdTipoTraccia:', this.selectedIdTipoTraccia);
+
     this.isLoading = true;
   
     let startControl = this.range.get('start');
     let endControl = this.range.get('end');
-
+  
     this.startDateFilter = startControl?.value ? new Date(startControl.value) : undefined;
     this.endDateFilter = endControl?.value ? new Date(endControl.value) : undefined;
-  
-    this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia, undefined, this.startDateFilter, this.endDateFilter)
-      .subscribe((traces: ITrace[]) => {
-        traces.forEach(trace => {
-          trace.dataOra = new Date(trace.dataOra);
-        });
-        this.list = traces;
-        if(this.startDateFilter && this.endDateFilter) {
-          this.list = this.list.filter(trace => trace?.dataOra && this.startDateFilter && trace.dataOra >= this.startDateFilter && this.endDateFilter && trace.dataOra <= this.endDateFilter);
-        }
 
-        if(this.selectedSocieta.length > 0) {
-          this.list = this.list.filter(trace => trace.societa && this.selectedSocieta.includes(trace.societa));
-        }
-        this.dataSource.data = this.list;
-        this.isLoading = false;
-        this.applyFilters();
-    });
+    this.traceService.getTracerByObservble(this.numberOfRows, undefined, undefined, this.startDateFilter, this.endDateFilter)
+        .subscribe((traces: ITrace[]) => {
+
+            traces.forEach(trace => {
+                trace.dataOra = new Date(trace.dataOra);
+            });
+            
+            this.list = traces.filter(trace => this.filterByDate(trace) && this.filterBySocieta(trace) && this.filterByIdTipoTraccia(trace));
+
+            this.dataSource.data = this.list;
+            console.log('Traces dopo tutti i filtri:', this.list);  
+    
+            this.isLoading = false;
+            this.applyFilters();
+        });
+}
+
+private filterByDate(trace: ITrace): boolean {
+    return (
+        (!this.startDateFilter || (trace.dataOra && trace.dataOra >= this.startDateFilter)) &&
+        (!this.endDateFilter || (trace.dataOra && trace.dataOra <= this.endDateFilter))
+    );
+}
+
+private filterBySocieta(trace: ITrace): boolean {
+  if (this.selectedSocieta.length > 0) {
+      return !!trace.societa && this.selectedSocieta.includes(trace.societa);
   }
+  return true;
+}
+private filterByIdTipoTraccia(trace: ITrace): boolean {
+  if (this.selectedIdTipoTraccia !== undefined && this.selectedIdTipoTraccia !== null) {
+      return trace.idTipoTraccia === this.selectedIdTipoTraccia;
+  }
+  return true; 
+}
   
 getAllTraces() {
     this.isLoading = true;
@@ -270,7 +285,7 @@ resetList(){
   }
 
   inItGetTrace(){
-    this.numberOfRows=100;
+    this.numberOfRows=10000;
     this.selectedIdTipoTraccia=3;
     this.getAllTracesByNumerOfRow();
     this.applyFilters();

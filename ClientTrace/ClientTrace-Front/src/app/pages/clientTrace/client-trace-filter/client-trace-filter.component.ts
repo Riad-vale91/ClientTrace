@@ -16,7 +16,7 @@ export class ClientTraceFilterComponent implements OnInit {
   @Output() startDateChange: EventEmitter<Date> = new EventEmitter<Date>();
   @Output() endDateChange: EventEmitter<Date> = new EventEmitter<Date>();
 
-  numberOfRows: number = 100; 
+  numberOfRows: number = 10000; 
   selectedIdTipoTraccia: number = 3;
   tracciaTypes: ITipoTraccia[] = [];
   selectedSocieta: string[] = [];
@@ -28,6 +28,7 @@ export class ClientTraceFilterComponent implements OnInit {
     gia: false,
   });
   isInputEnabled: boolean = false;
+  
 
 
   constructor(private traceService: TraceService, private _formBuilder: FormBuilder) { }
@@ -37,6 +38,7 @@ export class ClientTraceFilterComponent implements OnInit {
       this.tracciaTypes = traceTypes;
     });
     this.onCheckListSocieta();
+    
     
   }
   resetFilters() {
