@@ -73,6 +73,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
      }
     
+
   ngAfterViewInit(): void {
       this.paginatorPage();
       this.dataSource.filterPredicate = (data: ITrace, filter: string) => {
@@ -143,6 +144,7 @@ private filterByIdTipoTraccia(trace: ITrace): boolean {
   }
   return true; 
 }
+
   
 getAllTraces() {
     this.isLoading = true;
@@ -285,7 +287,7 @@ resetList(){
   }
 
   inItGetTrace(){
-    this.numberOfRows=10000;
+    this.numberOfRows=1000;
     this.selectedIdTipoTraccia=3;
     this.getAllTracesByNumerOfRow();
     this.applyFilters();
