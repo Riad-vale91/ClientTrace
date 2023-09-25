@@ -76,10 +76,10 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
       this.paginatorPage();
-      this.dataSource.filterPredicate = (data: ITrace, filter: string) => {
-        const descrizione = data.descrizione ? data.descrizione.toLowerCase() : '';
-        return descrizione.includes(filter);
-      };
+      // this.dataSource.filterPredicate = (data: ITrace, filter: string) => {
+      //   const descrizione = data.descrizione ? data.descrizione.toLowerCase() : '';
+      //   return descrizione.includes(filter);
+      // };
   }
 
   ngOnInit() {
@@ -97,7 +97,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     //this.initgetTracerByObservble();
   }
 
-  getAllTracesByNumerOfRow(): void {
+getAllTracesByNumerOfRow(): void {
     this.isLoading = true;
 
     let startControl = this.range.get('start');
@@ -125,11 +125,12 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
 }
 
 private filterByDate(trace: ITrace): boolean {
-    return (
-        (!this.startDateFilter || (trace?.dataOra && trace.dataOra >= this.startDateFilter)) &&
-        (!this.endDateFilter || (trace?.dataOra && trace.dataOra <= this.endDateFilter))
-    );
+  if (this.startDateFilter && this.endDateFilter) {
+      return trace?.dataOra && trace.dataOra >= this.startDateFilter && trace.dataOra <= this.endDateFilter;
+  }
+  return true; 
 }
+
 
 private filterBySocieta(trace: ITrace): boolean {
     if (this.selectedSocieta.length > 0) {
@@ -148,7 +149,33 @@ private filterByIdTipoTraccia(trace: ITrace): boolean {
     }
     return true; 
 }
+// getAllTracesByNumerOfRow() {
+//   this.isLoading = true;
 
+//   let startControl = this.range.get('start');
+//   let endControl = this.range.get('end');
+
+//   this.startDateFilter = startControl?.value ? new Date(startControl.value) : undefined;
+//   this.endDateFilter = endControl?.value ? new Date(endControl.value) : undefined;
+
+//   this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia, undefined, this.startDateFilter, this.endDateFilter)
+//     .subscribe((traces: ITrace[]) => {
+//       traces.forEach(trace => {
+//         trace.dataOra = new Date(trace.dataOra);
+//       });
+//       this.list = traces;
+//       if(this.startDateFilter && this.endDateFilter) {
+//         this.list = this.list.filter(trace => trace?.dataOra && this.startDateFilter && trace.dataOra >= this.startDateFilter && this.endDateFilter && trace.dataOra <= this.endDateFilter);
+//       }
+
+//       if(this.selectedSocieta.length > 0) {
+//         this.list = this.list.filter(trace => trace.societa && this.selectedSocieta.includes(trace.societa));
+//       }
+//       this.dataSource.data = this.list;
+//       this.isLoading = false;
+//       this.applyFilters();
+//   });
+// }
 
   
 getAllTraces() {
@@ -237,13 +264,25 @@ resetList(){
     this.getAllTracesByNumerOfRow();
   });
 }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+  this.dataSource.filterPredicate = (data: any, filter: string) => {
+    return Object.entries(data).some(([key, val]) => {
+      if (key === 'descrizione') {
+        return false;
+      }
+      return val ? val.toString().toLowerCase().includes(filter) : false;
+    });
+  };
+
+  this.dataSource.filter = filterValue;
+
+  if (this.dataSource.paginator) {
+    this.dataSource.paginator.firstPage();
   }
+}
+
 
   onRowClicked(row: ITrace) {
     this.dialog.open(TabellaDialogComponent, {
@@ -294,7 +333,7 @@ resetList(){
   }
 
   inItGetTrace(){
-    this.numberOfRows=1000;
+    this.numberOfRows=30000;
     this.selectedIdTipoTraccia=3;
     this.getAllTracesByNumerOfRow();
     this.applyFilters();
@@ -315,9 +354,15 @@ resetList(){
       console.log("Carica all List");
 
   }
- 
   applyDescriptionFilter() {
-    this.dataSource.filter = this.descrizioneFilter.trim().toLowerCase();
+    const filterValue = this.descrizioneFilter.trim().toLowerCase();
+  
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const descriptionValue = data.descrizione;
+      return descriptionValue ? descriptionValue.toString().toLowerCase().includes(filter) : false;
+    };
+  
+    this.dataSource.filter = filterValue;
   }
   
 }
