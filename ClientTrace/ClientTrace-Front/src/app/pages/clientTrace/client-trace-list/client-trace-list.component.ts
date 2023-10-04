@@ -333,7 +333,7 @@ applyFilter(event: Event) {
   }
 
   inItGetTrace(){
-    this.numberOfRows=30000;
+    this.numberOfRows=500;
     this.selectedIdTipoTraccia=3;
     this.getAllTracesByNumerOfRow();
     this.applyFilters();
@@ -356,14 +356,13 @@ applyFilter(event: Event) {
   }
   applyDescriptionFilter() {
     const filterValue = this.descrizioneFilter.trim().toLowerCase();
-  
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const descriptionValue = data.descrizione;
-      return descriptionValue ? descriptionValue.toString().toLowerCase().includes(filter) : false;
-    };
-  
-    this.dataSource.filter = filterValue;
-  }
-  
+    this.traceService.getTraces(this.numberOfRows, undefined, undefined, undefined, undefined, filterValue).subscribe(data => {
+        this.dataSource.data = data;
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    });
+    
+}
 }
   
