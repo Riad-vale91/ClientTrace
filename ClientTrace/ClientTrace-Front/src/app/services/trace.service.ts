@@ -4,13 +4,20 @@ import { tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { ITrace } from '../models/ITrace';
 import { ITipoTraccia } from '../models/ITipoTraccia';
+import { environment } from 'src/environments/environment';
+
+const base_url: string = environment.urlService;
 
 @Injectable({
   providedIn: 'root'
 })
 export class TraceService {
-  private url = 'http://localhost:5288/api/Trace/traces';
-  private urlTipoTraccia = 'http://localhost:5288/api/Types/traceTypes'; 
+
+  private url =  base_url + '/api/Trace/traces';
+  private urlTipoTraccia = base_url + '/api/Types/traceTypes'; 
+
+  // private url = 'http://localhost:5288/api/Trace/traces';
+  // private urlTipoTraccia = 'http://localhost:5288/api/Types/traceTypes'; 
 
   //private url = 'https://traceninja.sopranciodue.it:447/api/Trace/traces';
   //private urlTipoTraccia = 'https://traceninja.sopranciodue.it:447/api/Types/traceTypes'; 
