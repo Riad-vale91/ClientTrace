@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3pUU9VZekAzSF1xYdDwGkutf2mA8zvDP7+1YOVVFrOXCKWtYk4M9WWhHm+GbvBSgo2O8gIL50Q2y8NaxmPmy3Q==",
+  "dgSpecHash": "fA2nfZrQexTy1wpt9WaciMY9hAsup8T3kwYFAza2dvQwPI0Ze6q6g029GoX3ILFk3134Rn3+ndTOJGfaxXd8Sg==",
   "success": true,
   "projectFilePath": "C:\\PAUL\\PROGETTI\\ClientTrace\\ServerTrace\\ServerTrace\\ServerTrace\\ServerTrace.csproj",
   "expectedPackageFiles": [
@@ -132,7 +132,11 @@
     "C:\\Users\\paul.moscoso\\.nuget\\packages\\system.threading.threadpool\\4.3.0\\system.threading.threadpool.4.3.0.nupkg.sha512",
     "C:\\Users\\paul.moscoso\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\paul.moscoso\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
-    "C:\\Users\\paul.moscoso\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512"
+    "C:\\Users\\paul.moscoso\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
+    "C:\\Users\\paul.moscoso\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\paul.moscoso\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\paul.moscoso\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\paul.moscoso\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
   ],
   "logs": []
 }

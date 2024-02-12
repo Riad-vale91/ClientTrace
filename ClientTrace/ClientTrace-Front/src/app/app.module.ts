@@ -30,7 +30,6 @@ export function MSALInstanceFactory() : IPublicClientApplication
     declarations: [
         AppComponent
     ],
-   
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
