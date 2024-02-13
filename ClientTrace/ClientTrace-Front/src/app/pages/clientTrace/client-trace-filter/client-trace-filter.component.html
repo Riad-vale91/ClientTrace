@@ -5,20 +5,24 @@
     <span><mat-checkbox formControlName="co2">CO2</mat-checkbox></span>
     <span><mat-checkbox formControlName="gia">GIA</mat-checkbox></span>
   </section>
-  <mat-form-field class="custom-input" class="space-2">
+  <mat-form-field class="custom-input space-2">
     <mat-label>Tipo Traccia</mat-label>
     <mat-select [(ngModel)]="selectedIdTipoTraccia" (selectionChange)="selectedIdTipoTracciaChange.emit(selectedIdTipoTraccia)">
-      <!-- <mat-option [value]="0">Tutte le tracce</mat-option> -->
+      <mat-option [value]="null">Tutte le tracce</mat-option>
       <mat-option *ngFor="let tipo of tracciaTypes" [value]="tipo.id">
         {{ tipo.descrizione }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  
   <div class="flex">
-  <mat-form-field class="custom-input space">
-    <mat-label>Numero di righe</mat-label>
-    <input matInput [(ngModel)]="numberOfRows" (ngModelChange)="numberOfRowsChange.emit(numberOfRows)" type="number" min="1" step="1">
-  </mat-form-field>
+    <mat-form-field class="custom-input space">
+      <mat-label>Numero di righe</mat-label>
+      <input matInput [(ngModel)]="numberOfRows" [disabled]="!isInputEnabled" (ngModelChange)="numberOfRowsChange.emit(numberOfRows)" type="number" min="1" step="1">
+    </mat-form-field>
+    
+    <mat-checkbox [(ngModel)]="isInputEnabled">Abilita input</mat-checkbox>
+    
   </div>
   <!-- <button matTooltip="Conferma la ricerca" (click)="updateList()" mat-raised-button color="primary" class="custom-button">
       <mat-icon aria-hidden="false" aria-label="Icona di conferma">search</mat-icon>

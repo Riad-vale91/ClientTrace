@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import * as signalR from '@aspnet/signalR';
-import { environment } from 'src/environments/environment';
 
-//const base_url = 'http://localhost:5288';
-const base_url = environment.urlService;
+const base_url = 'http://localhost:5288';
 //const base_url = 'https://traceninja.sopranciodue.it:447';
 
 @Injectable({
