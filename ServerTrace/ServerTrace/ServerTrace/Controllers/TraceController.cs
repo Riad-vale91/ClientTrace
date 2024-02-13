@@ -26,25 +26,26 @@ namespace ServerTrace.Controllers
             {
                 var query = _context.DEV_TracerDB.AsQueryable().AsNoTracking();
 
-                if (IdTipoTraccia.HasValue)
+                if (!string.IsNullOrWhiteSpace(IdTipoTraccia.ToString()))
                 {
-                    query = query.Where(x => x.IdTipoTraccia == IdTipoTraccia.Value);
+                    query = query.Where(x => x.IdTipoTraccia == IdTipoTraccia);
                 }
-          
 
-                if (startDate.HasValue && startDate.Value.Year != 1900)
+
+                if (!string.IsNullOrWhiteSpace(startDate.ToString()))
                 {
-                    DateTime utcStartDate = startDate.Value.ToUniversalTime();
+                    DateTime utcStartDate = DateTime.SpecifyKind(startDate.Value.Date, DateTimeKind.Utc);
                     query = query.Where(x => x.DataOra >= utcStartDate);
                 }
 
-                if (endDate.HasValue && endDate.Value.Year != 1900)
+                if (!string.IsNullOrWhiteSpace(endDate.ToString()))
                 {
-                    DateTime utcEndDate = endDate.Value.ToUniversalTime().AddDays(1).AddTicks(-1);
-                    query = query.Where(x => x.DataOra <= utcEndDate);
+                    DateTime utcEndDate = DateTime.SpecifyKind(endDate.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59), DateTimeKind.Utc);
+                    query = query.Where(x => x.DataOra < utcEndDate);  
                 }
 
-                if (!string.IsNullOrEmpty(descrizione))
+
+              if (!string.IsNullOrWhiteSpace(descrizione))
                 {
                     query = query.Where(x => x.Descrizione.Contains(descrizione));
                     numberOfRows = int.MaxValue;

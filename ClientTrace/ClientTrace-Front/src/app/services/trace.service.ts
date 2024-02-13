@@ -19,10 +19,16 @@ export class TraceService {
   constructor(private httpClient: HttpClient) { }
 
   private _tracesBehavior = new BehaviorSubject<ITrace[]>([]);
+  private _tracesInitBehavior = new BehaviorSubject<ITrace[]>([]);
   private _traceTypesBehavior = new BehaviorSubject<ITipoTraccia[]>([]);
   private societaFilter = new BehaviorSubject<string[]>([]);
   private resetFilterSubject = new Subject<void>();
   resetFilter$ = this.resetFilterSubject.asObservable();
+  private _dateStartBehavior: BehaviorSubject<Date | undefined> = new BehaviorSubject<Date | undefined>(undefined);
+  private _dateEndBehavior:  BehaviorSubject<Date | undefined> = new BehaviorSubject<Date | undefined>(undefined);
+  private _descriptionBehavior = new BehaviorSubject<string>("");
+  
+  
 
   
 
@@ -35,6 +41,15 @@ export class TraceService {
     this._tracesBehavior.next(traces);
   }
 
+  get getTracesInitObservable()
+  {
+    return this._tracesInitBehavior.asObservable();
+  }
+  set setTracesInitObservable(traces:ITrace[])
+  {
+    this._tracesInitBehavior.next(traces);
+  }
+
   get getTraceTypesObservable() {
     
     return this._traceTypesBehavior.asObservable();
@@ -42,40 +57,68 @@ export class TraceService {
   set setTraceTypesObservable(traceTypes:ITipoTraccia[]) {
     this._traceTypesBehavior.next(traceTypes);
   }
+//inizio filter date
+  get getStartDateObservable() {
+    
+    return this._dateStartBehavior.asObservable();
+  }
+  set setStartDateObservable(startDate: Date | undefined) {
+    this._dateStartBehavior.next(startDate);
+  }
+// fine filter  date
+
+// end filter date
+get getEndDateObservable() {
+    
+  return this._dateEndBehavior.asObservable();
+}
+set setEndDateObservable(startDate: Date | undefined) {
+  this._dateEndBehavior.next(startDate);
+}
+//end filter date
+
+get getDescriptionObservable(){
+  return this._descriptionBehavior.asObservable();
+}
+set setDescriptionObservable(description:string) {
+  this._descriptionBehavior.next(description);
+}
   setSocietaFilter(societa: string[]) {
     this.societaFilter.next(societa);
 }
 
 
-getTraces(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
-  let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
-  if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
-    params = params.set('idTipoTraccia', idTipoTraccia.toString());
-  }
-  if (societa) {
-    params = params.set('societa', societa);
-  }
-  if (startDate) {
-    params = params.set('startDate', startDate.toISOString());
-  }
-  if (endDate) {
-    params = params.set('endDate', endDate.toISOString());
-  }
-  if (descrizione !== "") {
-    params = params.set('descrizione', descrizione);
-  }
-  
-  return this.httpClient.get<ITrace[]>(this.url, { params })
-    .pipe(
-      tap(traces => console.log(traces)),
-      catchError(error => {
-        console.error('Error traces', error);
-        throw error;
-      })
-    );
-}
+// getTraces(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
+//   let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
+//   if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
+//     params = params.set('idTipoTraccia', idTipoTraccia.toString());
+//   }
+//   if (societa) {
+//     params = params.set('societa', societa);
+//   }
+//   if (startDate) {
+//     params = params.set('startDate', startDate.toISOString());
+// }
+// if (endDate) {
+//     params = params.set('endDate', endDate.toISOString());
+// }
 
-getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
+//   if (descrizione !== "") {
+//     params = params.set('descrizione', descrizione);
+//   }
+  
+//   return this.httpClient.get<ITrace[]>(this.url, { params });
+//     // .pipe(
+//     //   tap(traces => console.log(traces)),
+//     //   catchError(error => {
+//     //     console.error('Error traces', error);
+//     //     throw error;
+//     //   })
+//     // );
+// }
+
+getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
+  console.log("parametro descrizione:", descrizione)
   let params = new HttpParams().set('numberOfRows', numberOfRows.toString());
   let tempStartDate = new Date("1900-01-01");
   let tempEndDate = new Date("1900-01-01");
@@ -83,29 +126,30 @@ getTracerByObservble(numberOfRows: number, idTipoTraccia?: number, societa?: str
   if (idTipoTraccia !== undefined && idTipoTraccia !== 0) {  
     params = params.set('idTipoTraccia', idTipoTraccia.toString());
   }
-  if (societa) {
-    params = params.set('societa', societa);
-  }
+  
   if (startDate) {
-    params = params.set('startDate', startDate.toISOString());
-    tempStartDate = startDate;
-  }
-  if (endDate) {
-    params = params.set('endDate', endDate.toISOString());
-    tempEndDate = endDate;
-  }
+ 
+    params = params.set('startDate', startDate.toDateString());
+
+}
+if (endDate) {
+    params = params.set('endDate', endDate.toDateString());
+    
+}
+
   if (descrizione !== "") {
     params = params.set('descrizione', descrizione);
   }
  
-  return this.httpClient.get<ITrace[]>(this.url, {params})
-    .pipe(
-      tap((resp: ITrace[]) => {
-        const currentTraces = this._tracesBehavior.getValue();
-        const updatedTraces = [...currentTraces, ...resp];
-        this._tracesBehavior.next(updatedTraces);
-      })
-    );
+  return this.httpClient.get<ITrace[]>(this.url, {params});
+    // .pipe(
+    //   // tap((resp: ITrace[]) => {
+    //   //   const currentTraces = this._tracesBehavior.getValue();
+    //   //   console.log("resp", resp);
+    //   //   const updatedTraces = [...currentTraces, ...resp];
+    //   //   this._tracesBehavior.next(updatedTraces);
+    //   // })
+    // );
 }
 
 resetTracer(numberOfRows: number, idTipoTraccia?: number, societa?: string, startDate?: Date, endDate?: Date, descrizione: string = ""): Observable<ITrace[]> {
@@ -119,10 +163,11 @@ resetTracer(numberOfRows: number, idTipoTraccia?: number, societa?: string, star
   }
   if (startDate) {
     params = params.set('startDate', startDate.toISOString());
-  }
-  if (endDate) {
+}
+if (endDate) {
     params = params.set('endDate', endDate.toISOString());
-  }
+}
+
   if (descrizione !== "") {
     params = params.set('descrizione', descrizione);
   }
@@ -149,5 +194,8 @@ resetTracer(numberOfRows: number, idTipoTraccia?: number, societa?: string, star
   }
   resetAllFilters() {
     this.resetFilterSubject.next();
+  }
+  ExistsList(data1: any, data2: any): boolean{
+    return (JSON.stringify(data1)== JSON.stringify(data2));
   }
 }
