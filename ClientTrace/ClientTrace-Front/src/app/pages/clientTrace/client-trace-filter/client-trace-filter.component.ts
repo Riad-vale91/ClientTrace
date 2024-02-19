@@ -85,7 +85,6 @@ export class ClientTraceFilterComponent implements OnInit {
   }
   
   updateList() {
-    
     this.numberOfRowsChange.emit(this.numberOfRows);
     this.selectedIdTipoTracciaChange.emit(this.selectedIdTipoTraccia);
     this.selectedSocietaChange.emit(this.selectedSocieta);
@@ -147,7 +146,7 @@ export class ClientTraceFilterComponent implements OnInit {
     console.log("inittrace", this.initTraces);
     this.traceService.setTracesObservable=this.tracesFilter;
   }
-    onCheckListSocieta() {
+  onCheckListSocieta() {
     this.formSocieta.get("sop")?.valueChanges.subscribe(resp => {
       if (resp) {
         this.sopFilter = "SOP";

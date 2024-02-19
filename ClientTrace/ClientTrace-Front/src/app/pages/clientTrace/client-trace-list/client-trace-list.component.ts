@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, debounceTime, pipe } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
@@ -58,7 +58,8 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     private datePipe: DatePipe,
     private _formBuilder: FormBuilder,
     //private traceHubService: TraceHubService
-    ) { 
+    ) 
+    { 
       let currentDate = new Date();
       this.range = this._formBuilder.group({
         start: [null],
@@ -75,7 +76,7 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
       // this.traceHubService.startConnection()
       // this.traceHubService.ReceveTracer();
 
-     }
+    }
     
 
   ngAfterViewInit(): void {
@@ -124,36 +125,13 @@ export class ClientTracelistComponent implements OnInit, AfterViewInit {
     //        this.endDateFilter.setUTCHours(23, 59, 59, 999); // Fine della giornata
     //    }
 
-    this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia !== null ? this.selectedIdTipoTraccia : undefined, this.startDateFilter, this.endDateFilter, filterValue)
-        .subscribe((traces: ITrace[]) => {
-          // this.traceService.setStartDateObservable = this.startDateFilter;
-          // this.traceService.setStartDateObservable = this.endDateFilter;
-          // console.log("traceOservable", traces);
-            // traces.forEach(trace => {
-            //     trace.dataOra = new Date(trace.dataOra);
-            // });
-            this.list = traces;
-            // this.list = traces.filter(trace => 
-            //     this.filterByDate(trace) 
-            //     // this.filterBySocieta(trace) && 
-            //     // this.filterByIdTipoTraccia(trace) &&
-            //     // this.filterByDescrizione(trace) 
-            // );
-            
-
-            // this.dataSource.data = this.list;    
-            this.isLoading = false;
-            this.traceService.setTracesObservable = traces;
-            this.traceService.setTracesInitObservable = traces;
-            //  this.list = traces.filter(trace => 
-            //   // this.filterByDate(trace) &&
-            // //  this.filterBySocieta(trace) && 
-            //  this.filterByIdTipoTraccia(trace) 
-            // //  this.filterByDescrizione(trace) 
-            // );
-            //  this.applyFilters();
-            // this.loadListFilter();
-        });
+    // this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia !== null ? this.selectedIdTipoTraccia : undefined, this.startDateFilter, this.endDateFilter, filterValue)
+    //     .subscribe((traces: ITrace[]) => {
+    //         this.list = traces;
+    //         this.isLoading = false;
+    //         this.traceService.setTracesObservable = traces;
+    //         this.traceService.setTracesInitObservable = traces;
+    //     });
 }
 
 
@@ -182,6 +160,7 @@ private filterByIdTipoTraccia(trace: ITrace): boolean {
     }
     return true; 
 }
+
 private filterByDescrizione(trace: ITrace): boolean {
   if (this.descrizioneFilter.trim() !== "") {
       return trace.descrizione ? trace.descrizione.toLowerCase().includes(this.descrizioneFilter.trim().toLowerCase()) : false;
@@ -227,28 +206,28 @@ getAllTraces() {
     let startDate: Date | undefined = startControl?.value ? new Date(startControl.value) : undefined;
     let endDate: Date | undefined = endControl?.value ? new Date(endControl.value) : undefined;
   
-    this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia, startDate, endDate)
-      .subscribe((traces: ITrace[]) => {
-        traces.forEach(trace => {
-          trace.dataOra = new Date(trace.dataOra);
-        });
-        this.list = traces;
-        this.dataSource.data = this.list;
-        this.isLoading = false;
-      });
+    // this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia, startDate, endDate)
+    //   .subscribe((traces: ITrace[]) => {
+    //     traces.forEach(trace => {
+    //       trace.dataOra = new Date(trace.dataOra);
+    //     });
+    //     this.list = traces;
+    //     this.dataSource.data = this.list;
+    //     this.isLoading = false;
+    //   });
 }
 
 getAllList(){
-  this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia).subscribe(resp=>{
-  });
+  // this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia).subscribe(resp=>{
+  // });
 }
 resetList(){ 
-  this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia).subscribe(resp=>{
-    this.traces = resp;
-    this.loadListFilter();
-    this.dataSource.data = this.tracesFilter;
-  });
-  this.getAllTracesByNumerOfRow();
+  // this.traceService.getTracerByObservble(this.numberOfRows, this.selectedIdTipoTraccia).subscribe(resp=>{
+  //   this.traces = resp;
+  //   this.loadListFilter();
+  //   this.dataSource.data = this.tracesFilter;
+  // });
+  // this.getAllTracesByNumerOfRow();
 }
 
   loadListFilter(){
@@ -405,39 +384,60 @@ applyFilter(event: Event) {
 
   }
   applyDescriptionFilter() {
-    const filterValue = this.descrizioneFilter.trim().toLowerCase();
-    this.traceService.setDescriptionObservable = this.descrizioneFilter;
-    console.log("applyDescripionFilter", this.descrizioneFilter);
-    this.traceService.getTracerByObservble(
-        this.numberOfRows,
-        this.selectedIdTipoTraccia, 
-        this.startDateFilter,
-        this.endDateFilter,
-        filterValue
-    ).subscribe(data => {
-        this.dataSource.data = data;
-        this.traceService.setTracesInitObservable = data;
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
-    });
+    
+    // setTimeout(() => {
+    //   const filterValue = this.descrizioneFilter.trim().toLowerCase();
+    //   this.traceService.setDescriptionObservable = this.descrizioneFilter;
+    //   this.traceService.getTracerByObservble(
+    //     this.numberOfRows,
+    //     this.selectedIdTipoTraccia, 
+    //     this.startDateFilter,
+    //     this.endDateFilter,
+    //     filterValue
+        
+    // ).subscribe(data => {
+    //     this.dataSource.data = data;
+    //     this.traceService.setTracesInitObservable = data;
+    //     if (this.dataSource.paginator) {
+    //         this.dataSource.paginator.firstPage();
+    //     }
+    // });
+    // }, 3000);
+
+
+
+    //console.log("applyDescripionFilter", this.descrizioneFilter);
+    // this.traceService.getTracerByObservble(
+    //     this.numberOfRows,
+    //     this.selectedIdTipoTraccia, 
+    //     this.startDateFilter,
+    //     this.endDateFilter,
+    //     filterValue
+        
+    // ).subscribe(data => {
+    //     this.dataSource.data = data;
+    //     this.traceService.setTracesInitObservable = data;
+    //     if (this.dataSource.paginator) {
+    //         this.dataSource.paginator.firstPage();
+    //     }
+    // });
 }
 
 applyAllFilters() {
-  const filterValue = this.descrizioneFilter.trim().toLowerCase();
-  const combinedSocieta = this.selectedSocieta.join(',');
-  this.traceService.getTracerByObservble(
-      this.numberOfRows,
-      this.selectedIdTipoTraccia,
-      this.startDateFilter,
-      this.endDateFilter,
-      filterValue
-  ).subscribe(data => {
-      this.dataSource.data = data;
-      if (this.dataSource.paginator) {
-          this.dataSource.paginator.firstPage();
-      }
-  });
+  // const filterValue = this.descrizioneFilter.trim().toLowerCase();
+  // const combinedSocieta = this.selectedSocieta.join(',');
+  // this.traceService.getTracerByObservble(
+  //     this.numberOfRows,
+  //     this.selectedIdTipoTraccia,
+  //     this.startDateFilter,
+  //     this.endDateFilter,
+  //     filterValue
+  // ).subscribe(data => {
+  //     this.dataSource.data = data;
+  //     if (this.dataSource.paginator) {
+  //         this.dataSource.paginator.firstPage();
+  //     }
+  // });
 }
 
 

@@ -20,7 +20,7 @@ export class LoginComponent {
     this.authService.loginPopup()
       .subscribe((response: AuthenticationResult) => {
         this.authService.instance.setActiveAccount(response.account);
-        this.router.navigateByUrl("/homepage");
+        this.router.navigateByUrl("/home");
       });
   }
 

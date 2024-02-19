@@ -1,0 +1,52 @@
+<div>
+  <form [formGroup]="formFilter">
+    <div [ngClass]="{'noActive': isLoading}">
+      <div class="custom-input-section">
+          <section class="example-section"  class="space-1">
+            <span><mat-checkbox formControlName="sop">SOP</mat-checkbox></span>
+            <span><mat-checkbox formControlName="cit">CIT</mat-checkbox></span>
+            <span><mat-checkbox formControlName="co2">CO2</mat-checkbox></span>
+            <span><mat-checkbox formControlName="gia">GIA</mat-checkbox></span>
+          </section>
+          <mat-form-field class="custom-input space-2">
+            <mat-label>Tipo Traccia</mat-label>
+              <mat-select  formControlName="idTipoTraccia" (selectionChange)="changeTipoTraccia($event)">
+              <mat-option value="-1">Tutte le tracce</mat-option>
+              <mat-option *ngFor="let tipo of tracciaTypes" [value]="tipo.id">
+                {{ tipo.descrizione }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="flex">
+            <mat-form-field class="custom-input space">
+              <mat-label>Numero di righe</mat-label>
+              <input matInput [disabled]="true" formControlName="numeroRighe"  type="number" min="1" step="1">
+            </mat-form-field>
+            <mat-checkbox >Abilita input</mat-checkbox>
+          </div>
+          <mat-form-field style="margin-left: 20px;" class="full-width-search">
+            <mat-label>Cerca per descrizione</mat-label>
+            <input matInput formControlName="descrizione"  placeholder="Cerca per descrizione">
+          </mat-form-field>
+        </div>
+        <div class="box">
+            <div class="my-inner-div align-items custom-input-section">
+                <mat-form-field class="date-picker-field" appearance="fill">
+                  <mat-label>Inserisci una data</mat-label>
+                  <mat-date-range-input [rangePicker]="picker" [formGroup]="formFilter">
+                      <input matStartDate formControlName="start" placeholder="Start date">
+                      <input matEndDate formControlName="end" placeholder="End date">
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </div>
+        </div>
+    </div>
+  </form>
+</div>
+
+<div>
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate" style="height: 5px;">Ciao</mat-progress-bar>
+  <br>
+</div>
