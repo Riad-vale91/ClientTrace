@@ -17,31 +17,54 @@ namespace ServerTrace.Controllers
         public TraceController(DEVLOGDbContext context)
         {
             _context = context;
+            _context.Database.SetCommandTimeout(3000);
         }
 
         [HttpGet("traces")]
-        public async Task<IActionResult> GetTraces(int numberOfRows, DateTime? startDate = null, DateTime? endDate = null, long? IdTipoTraccia = null)
+        public async Task<IActionResult> GetTraces
+            (
+                int numberOfRows,
+                int? IdTipoTraccia,
+                DateTime? startDate = null,
+                DateTime? endDate = null,
+                string? descrizione = null,
+                string? sop = "",
+                string? cit = "",
+                string? co2 = "",
+                string? gia = ""
+            )
         {
             try
-            {
-                var query = _context.DEV_TracerDB.AsQueryable();
+           {
+                var query = _context.DEV_TracerDB.AsQueryable().AsNoTracking();
 
-                if (IdTipoTraccia.HasValue)
+                if (IdTipoTraccia != -1)
                 {
-                    query = query.Where(x => x.IdTipoTraccia == IdTipoTraccia.Value);
+                    query = query.Where(x => x.IdTipoTraccia == IdTipoTraccia);
                 }
 
-                if (startDate.Value.Year != 1900)
+                if (!string.IsNullOrWhiteSpace(startDate.ToString()))
                 {
-                    DateTime utcStartDate = startDate.Value.ToUniversalTime();
-                    query = query.Where(x => x.DataOra >= utcStartDate);
+                    DateTime utcStartDate = DateTime.SpecifyKind(startDate.Value.Date, DateTimeKind.Utc);
+                    query = query.Where(x => x.DataOra >= startDate);
                 }
 
-                if (startDate.Value.Year != 1900)
+                if (!string.IsNullOrWhiteSpace(endDate.ToString()))
                 {
-                    DateTime utcEndDate = endDate.Value.ToUniversalTime().AddDays(1).AddTicks(-1);
-                    query = query.Where(x => x.DataOra <= utcEndDate);
+                    DateTime utcEndDate = DateTime.SpecifyKind(endDate.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59), DateTimeKind.Utc);
+                    query = query.Where(x => x.DataOra < utcEndDate);
                 }
+
+                if (!string.IsNullOrWhiteSpace(descrizione))
+                {
+                    query = query.Where(x => x.Descrizione.Contains(descrizione));
+                }
+                //lambda expression Or with multiple conditions
+
+                if(!string.IsNullOrWhiteSpace(sop) || !string.IsNullOrWhiteSpace(cit) || !string.IsNullOrWhiteSpace(co2) || !string.IsNullOrWhiteSpace(gia) )
+                {
+                    query = query.Where(x => x.Societa!.Equals(sop) || x.Societa.Equals(cit) || x.Societa.Equals(co2) || x.Societa.Equals(gia));
+                }   
 
                 var traces = await query.OrderByDescending(x => x.DataOra).Take(numberOfRows).ToListAsync();
 
@@ -54,5 +77,6 @@ namespace ServerTrace.Controllers
             }
         }
     }
+
 }
 

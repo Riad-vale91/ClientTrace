@@ -11,6 +11,14 @@ const routes: Routes = [
     path: "homepage",
     loadChildren: () => import("./pages/clientTrace/client-trace-view/client-trace-view.module").then(m => m.ClientTraceViewModule)
   },
+  {
+    path: "home",
+    loadChildren: () => import("./pages/trace/trace-view/trace-view.module").then(m => m.TraceViewModule)
+  },
+  {
+    path: "home",
+    loadChildren: () => import("./pages/trace/trace-view/trace-view.module").then(m => m.TraceViewModule)
+  },
 ];
 
 @NgModule({

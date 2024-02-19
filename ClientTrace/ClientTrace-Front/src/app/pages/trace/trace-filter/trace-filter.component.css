@@ -1,0 +1,4 @@
+.noActive{
+    pointer-events: none;
+    background-color: grey;
+}

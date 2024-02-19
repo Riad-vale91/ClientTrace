@@ -16,30 +16,21 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TabellaDialogModule } from 'src/app/components/tabella-dialog/tabella-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { ClientTraceFilterModule } from "../client-trace-filter/client-trace-filter.module";
-import { ClientTraceFilterComponent } from '../client-trace-filter/client-trace-filter.component';
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
-
-
-
-
+import { ClientTraceFilterComponent } from '../client-trace-filter/client-trace-filter.component';
+import { ClientTraceFilterModule } from "../client-trace-filter/client-trace-filter.module";
 
 
 @NgModule({
     declarations: [
-        ClientTracelistComponent,
-        
-        
+        ClientTracelistComponent
     ],
     providers: [
         DatePipe,
-        {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
-        
-        
-
+        {provide: MAT_DATE_LOCALE, useValue: 'it-IT'}
       ],
     exports: [
         ClientTracelistComponent
@@ -51,10 +42,8 @@ import { DatePipe } from '@angular/common';
         ClientTraceFilterModule,
         ReactiveFormsModule,
         FormsModule,
-        
-        
-        
 
+        // Material
         MatButtonModule,
         MatTableModule,
         MatPaginatorModule,
@@ -68,7 +57,8 @@ import { DatePipe } from '@angular/common';
         MatSelectModule,
         MatCheckboxModule,
         MatDatepickerModule,
-        MatNativeDateModule,
+        MatNativeDateModule
+        //Fine Material
     ]
 })
 export class ClientTraceListModule { }
