@@ -36,10 +36,11 @@ export class TraceFilterComponent implements OnInit, OnDestroy{
       co2: [''],
       gia: [''],
       idTipoTraccia: [this.idTipoTraccia],
-      numeroRighe: [this.numberOfRows],
+      numeroRighe: [{value: this.numberOfRows, disabled: true}],
       descrizione: [''],
       start:[null],
-      end: [null]
+      end: [null],
+      abilitaNumeroRighe: [false]
     })
   }
   ngOnDestroy(): void {
@@ -50,6 +51,7 @@ export class TraceFilterComponent implements OnInit, OnDestroy{
     this.loadTipiTraccia();
     this.filter();
     this.loadAllTraces();
+    this.abilitaNumeroRighe();
   }
 
   loadAllTraces() {
@@ -158,4 +160,17 @@ export class TraceFilterComponent implements OnInit, OnDestroy{
       this.loadAllTraces();
     });
   }
+  abilitaNumeroRighe(): void {
+    this.formFilter.get('abilitaNumeroRighe')?.valueChanges.subscribe(enabled => {
+      const numeroRigheControl = this.formFilter.get('numeroRighe');
+      if (numeroRigheControl) {
+        if (enabled) {
+          numeroRigheControl.enable();
+        } else {
+          numeroRigheControl.disable();
+        }
+      }
+    });
+  }
+  
 }
